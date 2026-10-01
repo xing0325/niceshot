@@ -1,0 +1,151 @@
+{
+  "title": "NiceShot",
+  "rules": [
+    {
+      "description": "NiceShot: Caps Lock Screenshot Layer",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "caps_lock",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "niceshot_caps_layer",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "niceshot_caps_layer",
+                "value": 0
+              }
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "caps_lock"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "s" },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "niceshot_caps_layer",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "shell_command": "/usr/sbin/screencapture -i -c -s -x"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "w" },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "niceshot_caps_layer",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "shell_command": "/usr/sbin/screencapture -i -c -w -o -x"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "f" },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "niceshot_caps_layer",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "shell_command": "/usr/sbin/screencapture -c -x"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": {
+              "mandatory": ["shift"]
+            }
+          },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "niceshot_caps_layer",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "shell_command": "dest=__NICESHOT_SAVE_DIR_SHELL__; p=\"$dest/Screenshot-$(/bin/date +%Y-%m-%d-%H.%M.%S).png\"; /bin/mkdir -p \"$dest\" && /usr/sbin/screencapture -i -s -x -t png \"$p\" && /usr/bin/osascript -e 'on run argv' -e 'set the clipboard to (read (POSIX file (item 1 of argv)) as «class PNGf»)' -e 'end run' \"$p\""
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "w",
+            "modifiers": {
+              "mandatory": ["shift"]
+            }
+          },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "niceshot_caps_layer",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "shell_command": "dest=__NICESHOT_SAVE_DIR_SHELL__; p=\"$dest/Screenshot-$(/bin/date +%Y-%m-%d-%H.%M.%S).png\"; /bin/mkdir -p \"$dest\" && /usr/sbin/screencapture -i -w -o -x -t png \"$p\" && /usr/bin/osascript -e 'on run argv' -e 'set the clipboard to (read (POSIX file (item 1 of argv)) as «class PNGf»)' -e 'end run' \"$p\""
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f",
+            "modifiers": {
+              "mandatory": ["shift"]
+            }
+          },
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "niceshot_caps_layer",
+              "value": 1
+            }
+          ],
+          "to": [
+            {
+              "shell_command": "dest=__NICESHOT_SAVE_DIR_SHELL__; p=\"$dest/Screenshot-$(/bin/date +%Y-%m-%d-%H.%M.%S).png\"; /bin/mkdir -p \"$dest\" && /usr/sbin/screencapture -x -t png \"$p\" && /usr/bin/osascript -e 'on run argv' -e 'set the clipboard to (read (POSIX file (item 1 of argv)) as «class PNGf»)' -e 'end run' \"$p\""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
